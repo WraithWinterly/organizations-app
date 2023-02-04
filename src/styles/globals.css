@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  background-color: black;
+}
+
+@layer components {
+  button {
+    @apply w-44 rounded-full border border-solid border-white  px-2 py-2 text-white transition-colors duration-300 hover:bg-white hover:text-purple-800;
+  }
+}
