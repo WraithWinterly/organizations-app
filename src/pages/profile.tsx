@@ -13,18 +13,19 @@ export default function Profile() {
       {!!user?.image ? (
         <img className="h-40 w-40 rounded-full" src={user.image}></img>
       ) : (
-        <p>No Image</p>
+        <span>No Image</span>
       )}
       <div className="flex flex-col text-start">
-        <p>Unique Id: {user?.id}</p>
-        <p>Name: {user?.name}</p>
-        <p>Email: {user?.email}</p>
+        <span>Unique Id: {user?.id}</span>
+        <span>Name: {user?.name}</span>
+        <span>Email: {user?.email}</span>
       </div>
 
       <button
         onClick={() => {
           signOut();
         }}
+        className="btn-warning btn"
       >
         Sign Out
       </button>

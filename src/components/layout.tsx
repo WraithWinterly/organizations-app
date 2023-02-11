@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <div className="relative">
-        <main className="relative flex h-full min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-900 text-white">
+        <main className="lg:prose-xl prose relative flex h-full min-h-screen min-w-full flex-col items-center bg-gradient-to-br from-gray-800 to-purple-900 pt-20 text-white">
           {children}
         </main>
         <Header />

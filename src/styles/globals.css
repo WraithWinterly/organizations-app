@@ -7,7 +7,29 @@ html {
 }
 
 @layer components {
-  button {
+  /* button {
     @apply w-44 rounded-full border border-solid border-white  px-2 py-2 text-white transition-colors duration-300 hover:bg-white hover:text-purple-800;
+  } */
+  .btn {
+    @apply rounded-2xl no-underline;
+  }
+  .label-text {
+    @apply text-base;
+  }
+
+  h1 {
+    @apply text-4xl font-extrabold text-gray-200;
+  }
+  h2 {
+    @apply text-3xl font-bold;
+  }
+  h3 {
+    @apply text-2xl font-bold;
+  }
+  h4 {
+    @apply text-xl font-bold;
+  }
+  p {
+    @apply text-base;
   }
 }
