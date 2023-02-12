@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function Organization() {
   const router = useRouter();
+  const session = useSession();
   const { name } = router.query;
 
   const organization = api.organizations.getByName.useQuery(name as string, {
@@ -12,6 +14,14 @@ export default function Organization() {
     retry: false,
   });
   const { data } = organization;
+
+  const deleteOrganization = api.organizations.deleteOrganization.useMutation({
+    onSuccess: () => {
+      router.push("/organizations");
+    },
+  });
+
+  const isAdmin = session.data?.user.id === organization.data?.ownerId;
 
   useEffect(() => {
     if (!!name) {
@@ -40,6 +50,14 @@ export default function Organization() {
               className="h-36 w-36 rounded-full"
             />
           </div>
+          {isAdmin && (
+            <button
+              className="btn-error btn"
+              onClick={() => deleteOrganization.mutate(data.name)}
+            >
+              Delete Organization
+            </button>
+          )}
         </div>
       )}
     </div>

@@ -63,4 +63,26 @@ export const organizationRouter = createTRPCRouter({
         };
       }
     }),
+  deleteOrganization: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const org = await ctx.prisma.organization.findUnique({
+        where: {
+          name: input,
+        },
+      });
+      if (org?.ownerId === ctx.session.user.id) {
+        await ctx.prisma.organization.delete({
+          where: {
+            name: input,
+          },
+        });
+        return true;
+      } else {
+        return new TRPCError({
+          code: "BAD_REQUEST",
+          message: `You are not the owner of this organization`,
+        });
+      }
+    }),
 });

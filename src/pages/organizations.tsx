@@ -10,6 +10,7 @@ export default function Home() {
   }
 
   const organizations = api.organizations.getAll.useQuery();
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col">

@@ -90,6 +90,7 @@ export default function CreateOrg() {
           type="text"
           id="orgName"
           className="input"
+          autoComplete="off"
           value={formState.name}
           onChange={(e) => {
             dispathFormState({ type: "name", payload: e.target.value });
@@ -106,6 +107,7 @@ export default function CreateOrg() {
           id="orgDescription"
           className="input"
           value={formState.description}
+          autoComplete="off"
           onChange={(e) => {
             dispathFormState({ type: "description", payload: e.target.value });
           }}
