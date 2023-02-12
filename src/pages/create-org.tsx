@@ -3,6 +3,9 @@ import NotSignedIn from "@/components/notSignedIn";
 import { api } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import { FormEvent, useId, useReducer, useState } from "react";
+import { z } from "zod";
+import { organizationInput } from "@utils/zTypes";
+import { useRouter } from "next/router";
 
 interface State {
   name: string;
@@ -20,7 +23,12 @@ export default function CreateOrg() {
     return <NotSignedIn />;
   }
 
-  const createOrg = api.organizations.createOrganization.useMutation();
+  const router = useRouter();
+  const createOrg = api.organizations.createOrganization.useMutation({
+    onSuccess: (data) => {
+      router.push(`/organizations/${formState.name}`);
+    },
+  });
 
   const [errors, setErrors] = useState<string[]>([]);
   const id = useId();
@@ -56,10 +64,10 @@ export default function CreateOrg() {
     if (formState.description.length < 1) {
       errors.push("Description must be at least 1 character long");
     }
+    organizationInput.parse(formState);
     setErrors(errors);
     if (errors.length > 0) return;
     createOrg.mutate(formState);
-    console.log(formState);
   }
 
   const [complete, setComplete] = useState(false);
