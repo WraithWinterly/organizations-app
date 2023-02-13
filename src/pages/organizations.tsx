@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import NotSignedIn from "@/components/notSignedIn";
 import Link from "next/link";
 import { api } from "@/utils/api";
+import { env } from "@/env/client.mjs";
 
 export default function Home() {
   const session = useSession();
@@ -33,7 +34,7 @@ export default function Home() {
               >
                 <h4>{org.name}</h4>
                 <span>{org.description}</span>
-                <Link href={`/organizations/${org.name}`}>
+                <Link href={`/organizations/view/${org.name}`}>
                   <button className="btn-primary btn">
                     Go To Organization Page
                   </button>

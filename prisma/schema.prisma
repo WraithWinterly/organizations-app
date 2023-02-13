@@ -63,14 +63,16 @@ model VerificationToken {
 }
 
 model Organization {
-  id          String     @id @default(cuid())
-  name        String     @unique
-  description String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  usersData   UserData[]
-  owner       User?      @relation(fields: [ownerId], references: [id])
-  ownerId     String?
+  id              String     @id @default(cuid())
+  name            String     @unique
+  description     String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  usersData       UserData[]
+  backgroundImage Image?     @relation(fields: [imageId], references: [id])
+  imageId         String?
+  owner           User?      @relation(fields: [ownerId], references: [id])
+  ownerId         String?
 }
 
 model UserData {
@@ -80,4 +82,12 @@ model UserData {
   points         Int
   organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId String?
+}
+
+model Image {
+  id           String         @id @default(cuid())
+  publicId     String         @unique
+  format       String
+  version      String
+  Organization Organization[]
 }

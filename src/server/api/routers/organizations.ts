@@ -1,8 +1,15 @@
-import { organizationInput } from "@/utils/zTypes";
+import { deleteImage } from "@/utils/cloudinary";
+import { organizationInput } from "@/utils/organization.schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export const organizationRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -21,6 +28,7 @@ export const organizationRouter = createTRPCRouter({
               image: true,
             },
           },
+          backgroundImage: true,
           usersData: true,
         },
       });
@@ -70,7 +78,13 @@ export const organizationRouter = createTRPCRouter({
         where: {
           name: input,
         },
+        include: {
+          backgroundImage: true,
+        },
       });
+      if (!!org?.backgroundImage && !!org.backgroundImage.publicId) {
+        await deleteImage(org.backgroundImage.publicId);
+      }
       if (org?.ownerId === ctx.session.user.id) {
         await ctx.prisma.organization.delete({
           where: {

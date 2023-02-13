@@ -4,7 +4,7 @@ import { api } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import { FormEvent, useId, useReducer, useState } from "react";
 import { z } from "zod";
-import { organizationInput } from "@utils/zTypes";
+import { organizationInput } from "@/utils/organization.schema";
 import { useRouter } from "next/router";
 
 interface State {
@@ -26,7 +26,7 @@ export default function CreateOrg() {
   const router = useRouter();
   const createOrg = api.organizations.createOrganization.useMutation({
     onSuccess: (data) => {
-      router.push(`/organizations/${formState.name}`);
+      router.push(`/organizations/view/${formState.name}`);
     },
   });
 
@@ -64,7 +64,7 @@ export default function CreateOrg() {
     if (formState.description.length < 1) {
       errors.push("Description must be at least 1 character long");
     }
-    organizationInput.parse(formState);
+    organizationInput.safeParse(formState);
     setErrors(errors);
     if (errors.length > 0) return;
     createOrg.mutate(formState);
