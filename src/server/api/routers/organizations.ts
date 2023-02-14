@@ -13,7 +13,15 @@ export const config = {
 
 export const organizationRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.organization.findMany();
+    return ctx.prisma.organization.findMany({
+      include: {
+        owner: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }),
   getByName: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     try {
@@ -98,5 +106,24 @@ export const organizationRouter = createTRPCRouter({
           message: `You are not the owner of this organization`,
         });
       }
+    }),
+  getMyOrganizations: protectedProcedure.query(async ({ ctx }) => {
+    const orgs = await ctx.prisma.organization.findMany({
+      where: {
+        ownerId: ctx.session.user.id,
+      },
+    });
+    return orgs;
+  }),
+  checkAdmin: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const org = await ctx.prisma.organization.findUnique({
+        where: {
+          name: input,
+        },
+      });
+
+      return { isAdmin: org?.ownerId === ctx?.session?.user.id };
     }),
 });

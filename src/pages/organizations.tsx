@@ -25,7 +25,8 @@ export default function Home() {
                 className="flex flex-col rounded-xl bg-neutral-focus px-2 py-2"
               >
                 <h4>{org.name}</h4>
-                <span>{org.description}</span>
+                <span className="text-gray-400">{org.description}</span>
+                <span>Owner: {org.owner?.name}</span>
                 <Link href={`/organizations/view/${org.name}`}>
                   <button className="btn-primary btn">
                     Go To Organization Page

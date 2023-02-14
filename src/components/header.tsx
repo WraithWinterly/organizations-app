@@ -31,6 +31,15 @@ export default function Header() {
               View Organizations
             </button>
           </Link>
+          <Link href="/dashboard">
+            <button
+              className={`btn ${
+                router.pathname === "/dashboard" ? "btn-accent" : "btn-primary"
+              }`}
+            >
+              Dashboard
+            </button>
+          </Link>
           {session.status === "unauthenticated" && (
             <button className="btn-primary btn" onClick={() => signIn()}>
               Sign In

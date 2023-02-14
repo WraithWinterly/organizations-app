@@ -9,7 +9,10 @@ export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!router.pathname.includes("organizations/view")) {
+    if (
+      !router.pathname.includes("organizations/view") &&
+      !router.pathname.includes("organizations/manage")
+    ) {
       ctx.setBackgroundImage(null);
     }
   }, [router.pathname]);

@@ -18,13 +18,13 @@ html {
   }
 
   h1 {
-    @apply text-4xl font-extrabold text-gray-200;
+    @apply mb-4 text-4xl font-extrabold text-gray-200;
   }
   h2 {
-    @apply text-3xl font-bold;
+    @apply mb-2 text-3xl font-bold;
   }
   h3 {
-    @apply text-2xl font-bold;
+    @apply mb-1 text-2xl font-bold;
   }
   h4 {
     @apply text-xl font-bold;

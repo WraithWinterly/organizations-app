@@ -6,6 +6,7 @@ import { constructImageURL } from "@/utils/utils";
 import { useUserContext } from "@/userContext/userContext";
 import OpenModal from "@/components/ui/openModal";
 import Modal from "@/components/ui/modal";
+import Link from "next/link";
 
 export default function Organization() {
   const id = useId();
@@ -19,16 +20,10 @@ export default function Organization() {
     retry: false,
   });
   const { data } = organization;
+  const isAdmin = organization.data?.ownerId === session.data?.user?.id;
   const bgImage = data?.backgroundImage;
 
-  const deleteOrganization = api.organizations.deleteOrganization.useMutation({
-    onSuccess: () => {
-      router.push("/organizations");
-    },
-  });
-
   const context = useUserContext();
-  const isAdmin = session.data?.user.id === organization.data?.ownerId;
 
   useEffect(() => {
     if (!!name) {
@@ -43,8 +38,8 @@ export default function Organization() {
     }
   }, [bgImage]);
   return (
-    <div>
-      <h1>Organization Page</h1>
+    <div className="w-full max-w-2xl">
+      <h1 className="text-center">Organization Page</h1>
 
       {organization.error && (
         <div>
@@ -64,85 +59,21 @@ export default function Organization() {
               alt="profile"
               className="h-36 w-36 rounded-full"
             />
+            {isAdmin && (
+              <div className="flex flex-col">
+                <span>You are an admin of this organization.</span>
+                <Link
+                  href={`
+                  /organizations/manage/${data.name}
+                `}
+                >
+                  <button className="btn">Manage Organiation</button>
+                </Link>
+              </div>
+            )}
           </div>
-          {isAdmin && (
-            <>
-              <button
-                className="btn-error btn"
-                onClick={() => deleteOrganization.mutate(data.name)}
-              >
-                Delete Organization
-              </button>
-
-              <OpenModal modalId={id} text="Upload BG Image" />
-              <UploadBGImageSection modalId={id} orgName={name as string} />
-            </>
-          )}
         </div>
       )}
     </div>
-  );
-}
-
-interface UploadBGImageSectionProps {
-  modalId: string;
-  orgName: string;
-}
-function UploadBGImageSection({ modalId, orgName }: UploadBGImageSectionProps) {
-  const router = useRouter();
-
-  const [imageUploaded, setImageUploaded] = useState<File>();
-
-  const handleChange = (e: any) => {
-    setImageUploaded(e.target.files[0]);
-  };
-
-  const submit = async (e: any) => {
-    e.preventDefault();
-    if (!imageUploaded) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", imageUploaded);
-
-    const response = await fetch(
-      `/api/organizations/uploadImageBg/${orgName}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    if (response.ok) {
-      // router.push(`/organizations/view/${name}`);
-      router.reload();
-    }
-  };
-
-  return (
-    <Modal uniqueId={modalId}>
-      <div className="page">
-        <form
-          onSubmit={submit}
-          className="flex flex-col gap-4 rounded-md  px-4 py-2"
-        >
-          <h1>Set Background Image</h1>
-
-          <input
-            onChange={handleChange}
-            className="block w-full cursor-pointer rounded-lg border border-gray-800 bg-gray-700 text-sm text-gray-200 focus:outline-none"
-            accept=".jpg, .png, .jpeg"
-            type="file"
-          ></input>
-
-          <input
-            type="submit"
-            value="Upload"
-            className="btn-primary btn "
-            disabled={!imageUploaded}
-          />
-        </form>
-      </div>
-    </Modal>
   );
 }
