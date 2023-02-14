@@ -1,15 +1,7 @@
-import { useSession } from "next-auth/react";
-import NotSignedIn from "@/components/notSignedIn";
 import Link from "next/link";
 import { api } from "@/utils/api";
-import { env } from "@/env/client.mjs";
 
 export default function Home() {
-  const session = useSession();
-  if (session.status === "unauthenticated") {
-    return <NotSignedIn />;
-  }
-
   const organizations = api.organizations.getAll.useQuery();
 
   return (

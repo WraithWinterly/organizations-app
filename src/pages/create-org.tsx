@@ -1,11 +1,9 @@
-import { useEffect } from "react";
-import NotSignedIn from "@/components/notSignedIn";
+import { FormEvent, useId, useReducer, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import { useSession } from "next-auth/react";
-import { FormEvent, useId, useReducer, useState } from "react";
-import { z } from "zod";
 import { organizationInput } from "@/utils/organization.schema";
-import { useRouter } from "next/router";
+import NotSignedIn from "@/components/notSignedIn";
 
 interface State {
   name: string;

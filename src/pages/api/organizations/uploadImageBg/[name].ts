@@ -1,9 +1,8 @@
-// import { uploadOrganizationBgImage } from "@/utils/restApiTypes";
-import { getServerAuthSession } from "@/server/auth";
+import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/server/db";
+import { getServerAuthSession } from "@/server/auth";
 import { deleteImage, uploadImage } from "@/utils/cloudinary";
 import { getImage } from "@/utils/formidable";
-import { NextApiRequest, NextApiResponse } from "next";
 
 export const config = {
   api: {

@@ -2,8 +2,6 @@ import { useEffect, useId, useState } from "react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { env } from "@/env/client.mjs";
 import { constructImageURL } from "@/utils/utils";
 import { useUserContext } from "@/userContext/userContext";
 import OpenModal from "@/components/ui/openModal";
